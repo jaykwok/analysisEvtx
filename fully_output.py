@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+
 import sys
 import os
 import glob
@@ -91,7 +94,7 @@ def process_folder(folder_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python script.py <folder_path>")
+        print("Usage: python fully_output.py <folder_path>")
         sys.exit(1)
 
     folder_path = sys.argv[1]
