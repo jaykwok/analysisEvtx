@@ -4,21 +4,41 @@
 
 ### 2024/10/15
 
-修改读取文件方式，改为读取文件夹，文件夹中自动筛选evtx文件，并输出对应文件至目标文件夹/output/
+1、修改读取文件方式，改为读取文件夹，文件夹中自动筛选evtx文件，并输出对应文件至目标文件夹/output/
+
+2、修改读取方式，由xml格式读取改为json格式展开，加快读取速度
+
+3、筛选事件ID并添加事件描述，输出事件中的全量字段，并删除空白列和列值仅有一种的列。筛选的事件ID包含如下部分：
+
+| 事件描述                                       | 事件ID                           |
+| ---------------------------------------------- | -------------------------------- |
+| 日志清除记录                                   | 1102                             |
+| 出入站连接记录                                 | 5156 、5158                      |
+| 账户管理（创建/删除）记录                      | 4720 、4726                      |
+| 安全组管理（添加/移除）记录                    | 4732 、4733                      |
+| 账户行为（登录/注销/失败）记录                 | 4624 、4634 、4625               |
+| 凭证验证及特殊登录                             | 4776 、 4672                     |
+| 计划任务事件（创建/删除/已启用/已停用/已更新） | 4698 、4699 、4700 、4701 、4702 |
+| 进程（创建/终止）记录                          | 4688 、4689                      |
+| 注册表修改                                     | 4657                             |
 
 
 
 ## 项目描述
 
-分析windows日志文件（.evtx），通过写定的xml tag值，将对应的日志内容转换为excel文件，方便进行数据筛选.   
+分析windows日志文件（.evtx），通过写定的Json tag值，将对应的日志内容转换为excel文件，方便进行数据筛选.   
+
 开发语言：python   
-主要使用python库：python-evtx    
-写定的xml tag值："Provider.Name", "Provider.Guid", "EventID", "Level", "TimeCreated.SystemTime",    
-                 "EventRecordID", "Execution.ProcessID", "Execution.ThreadID", "Channel",    
-                 "Computer", "ProcessID", "Application", "Direction", "SourceAddress", "SourcePort",    
-                 "DestAddress", "DestPort", "Protocol", "RemoteUserID", "RemoteMachineID",    
-                 "Security.UserID", "QueryName", "EventSourceName", "Data"    
-                 如需修改则修改main.py中__init__函数的requireTagList数组    
+
+主要使用python库：evtx    
+
+如需修改则修改python文件中的process_evtx_file函数
+
+### 文件描述
+
+output：根据给定的事件ID筛选并导出excel文件。
+
+fully_output：导出所有信息至excel文件，删除空白列和列仅有一种值的列（即方差为0）。
 
 
 
