@@ -88,7 +88,11 @@ def process_evtx_file(file_path, output_dir):
         df = df.dropna(axis=1, how="all")
 
         # 删除只有一个唯一值的列
-        df = df.loc[:, df.nunique() != 1]
+        # df = df.loc[:, df.nunique() != 1]
+
+        # 删除列中所有行都有值，但值仅为一种的列
+        columns_to_keep = df.columns[~((df.nunique() == 1) & (df.notna().all()))]
+        df = df[columns_to_keep]
 
         # 重新排列列，使Event_ID和Event_Description在前面
         columns = ["Event_ID", "Event_Description"] + [
